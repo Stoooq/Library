@@ -136,16 +136,23 @@ main .books-container .book .author,
 main .books-container .book .title {
   font-size: 28px;
 }
-main .books-container .book .is-read,
+main .books-container .book .not-read,
+main .books-container .book .read,
 main .books-container .book .delete-book {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 200px;
   height: 50px;
-  background-color: tomato;
   letter-spacing: 2px;
   text-transform: uppercase;
   border-radius: 8px;
   cursor: pointer;
+}
+main .books-container .book .not-read,
+main .books-container .book .delete-book {
+  background-color: tomato;
+}
+main .books-container .book .read {
+  background-color: green;
 }/*# sourceMappingURL=style.css.map */

@@ -1,13 +1,15 @@
-export class Book {
+class Book {
     constructor (
-        title = '',
         author = '',
+        title = '',
         pages = '0',
         isRead = false
     ) {
-        this.title = title
         this.author = author
+        this.title = title
         this.pages = pages
         this.isRead = isRead
     }
 }
+
+export default Book

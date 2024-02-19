@@ -1,5 +1,5 @@
-import { Book } from './Book.js';
-import { Library } from './Library.js';
+import Book from './Book.js';
+import Library from './Library.js';
 
 const library = new Library()
 
@@ -20,19 +20,18 @@ const openForm = () => {
     main.classList.toggle('blur')
 }
 
-const createNewBook = () => {
+const allBookProperties = () => {
     const author = authorInput.value
     const title = titleInput.value
     const pages = pagesInput.value
     const read = readInput.checked
+
+    
     
     return new Book(author, title, pages, read)
 }
 
-const addBook = () => {
-    const newBook = createNewBook()
-    library.addBook(newBook)
-
+const addBookToList = (newBook) => {
     const book = document.createElement('div')
     const author = document.createElement('p')
     const title = document.createElement('p')
@@ -44,14 +43,21 @@ const addBook = () => {
     author.classList.add('author')
     title.classList.add('title')
     pages.classList.add('pages')
-    isRead.classList.add('is-read')
     deleteBook.classList.add('delete-book')
 
-    author.textContent = authorInput.value
-    title.textContent = titleInput.value
-    pages.textContent = pagesInput.value
-    isRead.textContent = readInput.checked
+    deleteBook.addEventListener('click', removeBook)
+
+    author.textContent = newBook.author
+    title.textContent = newBook.title
+    pages.textContent = newBook.pages
+    isRead.textContent = newBook.isRead ? 'Read' : 'Not Read'
     deleteBook.textContent = 'delete'
+
+    isRead.textContent === 'Read' ? isRead.classList.add('read') : isRead.classList.add('not-read')
+
+    isRead.addEventListener('click', changeReadValue)
+
+    book.setAttribute('data-id', newBook.title)
 
     book.appendChild(author)
     book.appendChild(title)
@@ -63,7 +69,53 @@ const addBook = () => {
     form.classList.add('hide')
     header.classList.remove('blur')
     main.classList.remove('blur')
+}
 
+const showAllBooks = () => {
+    reset()
+    library.books.forEach(book => {
+        addBookToList(book)
+    })
+}
+
+const reset = () => {
+    authorInput.value = ''
+    titleInput.value = ''
+    pagesInput.value = ''
+    readInput.checked = ''
+    booksContainer.textContent = ''
+}
+
+const changeReadValue = (e) => {
+    const id = e.target.parentElement.getAttribute('data-id')
+    library.changeReadValue(id)
+    showAllBooks()
+}
+
+const removeBook = (e) => {
+    const title = e.target.parentElement.getAttribute('data-id')
+    library.removeBook(title)
+    showAllBooks()
+}
+
+const addBook = () => {
+    const newBook = allBookProperties()
+
+    if (newBook.author === '') {
+        alert('Add author')
+        return
+    }
+    if (newBook.title === '') {
+        alert('add title')
+        return
+    }
+    if (newBook.pages === '') {
+        alert('add pages')
+        return
+    }
+
+    library.addBook(newBook)
+    showAllBooks()
 }
 
 addBookBtn.addEventListener('click', openForm)
